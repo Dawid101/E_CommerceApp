@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.AnyKeyJavaClass;
 
 import java.math.BigDecimal;
 
@@ -21,5 +20,7 @@ public class Product {
     private String description;
     private BigDecimal price;
     private Integer quantity;
-    private String categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }
