@@ -1,15 +1,13 @@
 package com.app.ecommerceapp.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "customers")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer {
@@ -20,7 +18,11 @@ public class Customer {
     private String lastName;
     private String email;
     private String phoneNumber;
+    private String login;
+    private String password;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
+    @OneToMany
+    private List<Role> roles;
 }
