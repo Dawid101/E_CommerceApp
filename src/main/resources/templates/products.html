@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html>
 <html xmlns="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
@@ -7,7 +8,25 @@
 </head>
 <body>
 <div class="container mt-4">
-  <h2>Lista produktów</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Cześć, <span th:text="${userDetails.name}"></span>!</h2>
+        <div class="d-flex align-items-center gap-3">
+            <div class="btn-group" role="group">
+                <a href="/cart" class="btn btn-sm btn-outline-success">
+                    <i class="bi bi-cart3"></i> Mój koszyk
+                </a>
+                <a href="/my-orders" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-cart3"></i> Moje zamówienia
+                </a>
+                <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" >
+                    <a th:href="@{/addProduct}" class="btn btn-sm btn-outline-primary" >Dodaj produkt</a>
+                </a>
+                <a th:href="@{/logout}" class="btn btn-sm btn-outline-danger">
+                    <i class="bi bi-box-arrow-right"></i> Wyloguj
+                </a>
+            </div>
+        </div>
+    </div>
   <table class="table table-striped table-hover">
     <thead>
     <tr>
@@ -20,14 +39,14 @@
     <tbody>
     <tr th:each="product : ${products}">
       <td>
-        <a th:href="@{/products/{name}(name=${product.name})}"
+        <a th:href="@{/products/{name}(name=${product.id})}"
            th:text="${product.name}"
            class="text-decoration-none"></a>
       </td>
       <td th:text="${product.price} + ' zł'"></td>
       <td th:text="${product.categoryName}"></td>
       <td>
-        <a th:href="@{/products/{name}(name=${product.name})}"
+        <a th:href="@{/products/{name}(name=${product.id})}"
            class="btn btn-sm btn-outline-primary">
           Szczegóły
         </a>
@@ -35,7 +54,6 @@
     </tr>
     </tbody>
   </table>
-  <a th:href="@{/logout}" class="btn btn-sm btn-outline-primary">Wyloguj</a>
 </div>
 </body>
 </html>

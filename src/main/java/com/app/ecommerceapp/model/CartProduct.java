@@ -5,29 +5,29 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class OrderProduct {
+@Table(name = "carts_products")
+public class CartProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     @ManyToOne
-    private Order order;
-    private BigDecimal price;
-    private String name;
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
     private Integer quantity;
 
     @Override
     public String toString() {
-        return "OrderProduct{" +
+        return "CartProduct{" +
                 "id='" + id + '\'' +
-                ", order=" + order.getId() +
-                ", price=" + price +
-                ", name='" + name + '\'' +
+                ", cart=" + cart.getId() +
+                ", product=" + product.getId() +
                 ", quantity=" + quantity +
                 '}';
     }

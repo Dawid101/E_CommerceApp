@@ -17,6 +17,10 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
 
+    public ProductDto newProductDto(){
+        return new ProductDto();
+    }
+
     public List<ProductDto> getAllProducts() {
         return productRepository.findAll().stream()
                 .map(this::toDto).toList();
@@ -29,14 +33,13 @@ public class ProductService {
         return createProduct(name, description, price, quantity, category);
     }
 
-    public ProductDto findByName(String name) {
-        return productRepository.findByName(name)
+    public ProductDto findById(String id){
+        return productRepository.findById(id)
                 .map(this::toDto)
-                .orElseThrow(() -> new RuntimeException("Produkt o nazwie '" + name + "' nie został znaleziony"));
+                .orElseThrow(() -> new RuntimeException("Produkt nie został znaleziony"));
     }
 
-
-    //pomocnicza metoda dodawnia produktu
+    //mapowanie na Product
     private Product createProduct(String name, String description, BigDecimal price, Integer quantity, Category category) {
         Product product = new Product();
         product.setName(name);
@@ -48,8 +51,9 @@ public class ProductService {
     }
 
     //mapowanie na ProductDto
-    public ProductDto toDto(Product product){
+    public ProductDto toDto(Product product) {
         ProductDto productDto = new ProductDto();
+        productDto.setId(product.getId());
         productDto.setName(product.getName());
         productDto.setDescription(product.getDescription());
         productDto.setPrice(product.getPrice());
