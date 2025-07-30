@@ -19,7 +19,7 @@
                     <i class="bi bi-cart3"></i> Moje zamówienia
                 </a>
                 <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" >
-                    <a th:href="@{/addProduct}" class="btn btn-sm btn-outline-primary" >Dodaj produkt</a>
+                    <a th:href="@{/add-product}" class="btn btn-sm btn-outline-primary" >Dodaj produkt</a>
                 </a>
                 <a th:href="@{/logout}" class="btn btn-sm btn-outline-danger">
                     <i class="bi bi-box-arrow-right"></i> Wyloguj
@@ -48,7 +48,7 @@
       <td>
         <a th:href="@{/products/{name}(name=${product.id})}"
            class="btn btn-sm btn-outline-primary">
-          Szczegóły
+          Szczegóły produktu
         </a>
       </td>
     </tr>

@@ -38,7 +38,7 @@ public class ProductController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/addProduct")
+    @GetMapping("/add-product")
     public String addProductForm(Model model) {
         model.addAttribute("product", productService.newProductDto());
         model.addAttribute("categories", categoryService.getAll());
@@ -46,7 +46,7 @@ public class ProductController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/addProduct")
+    @PostMapping("/add-product")
     public String addProduct(@ModelAttribute ProductDto createProductDto) {
          productService.addProduct(
                 createProductDto.getName(),

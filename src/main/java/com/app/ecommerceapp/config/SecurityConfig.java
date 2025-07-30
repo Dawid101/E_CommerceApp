@@ -21,7 +21,7 @@ public class SecurityConfig {
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/addCustomer").permitAll()
                         .requestMatchers("/api/role/**").permitAll()
-                        .requestMatchers("/addProduct").hasRole("ADMIN")
+                        .requestMatchers("/add-product").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.disable())

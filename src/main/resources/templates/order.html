@@ -20,6 +20,7 @@
         <tr th:each="order : ${orders}">
             <td th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
             <td th:text="${order.totalPrice} + ' zł'"></td>
+            <td> <a th:href="@{/order-details/{name}(name=${order.id})}" class="btn btn-sm btn-outline-primary">Szczegóły zamówienia</a></td>
         </tr>
         </tbody>
     </table>

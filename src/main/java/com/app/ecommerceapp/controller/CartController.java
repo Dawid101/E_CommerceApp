@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.SortedMap;
 
 @Slf4j
 @Controller
@@ -23,7 +22,7 @@ public class CartController {
     private final CustomerService customerService;
 
 
-    @PostMapping("/addToCart")
+    @PostMapping("/add-to-cart")
     public String addProductToCart(@RequestParam("productId") String productId,
                                    @RequestParam("quantity") Integer quantity,
                                    Authentication authentication) {

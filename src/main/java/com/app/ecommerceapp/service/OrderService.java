@@ -4,6 +4,7 @@ import com.app.ecommerceapp.model.*;
 import com.app.ecommerceapp.repository.CartProductRepository;
 import com.app.ecommerceapp.repository.CartRepository;
 import com.app.ecommerceapp.repository.OrderRepository;
+import com.app.ecommerceapp.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,15 @@ public class OrderService {
     private final CartRepository cartRepository;
     private final OrderRepository orderRepository;
     private final CartProductRepository cartProductRepository;
+    private final ProductRepository productRepository;
+
+    public void reducingAmountOfProduct(List<CartProduct> cartProducts) {
+        cartProducts.forEach(cartProduct -> {
+            Product product = productRepository.findById(cartProduct.getProduct().getId()).orElseThrow();
+            product.setQuantity(product.getQuantity() - cartProduct.getQuantity());
+            productRepository.save(product);
+        });
+    }
 
     public List<Order> getOrdersByCustomerId(String id) {
         return orderRepository.findByCustomerId(id);
@@ -25,18 +35,19 @@ public class OrderService {
 
     public void placeOrder(String cartId) {
         Cart cart = getCart(cartId);
-        List<Product> products = getProducts(cart);
+        List<CartProduct> cartProducts = cart.getCartProducts();
         Customer customer = cart.getCustomer();
-        Order order = createOrder(products, customer);
+        Order order = createOrder(cartProducts, customer);
         order.setTotalPrice(calculateTotalPrice(cart.getCartProducts()));
         orderRepository.save(order);
+        reducingAmountOfProduct(cart.getCartProducts());
         clearCart(cartId);
     }
 
-    private Order createOrder(List<Product> products, Customer customer) {
+    private Order createOrder(List<CartProduct> cartProducts, Customer customer) {
         Order order = new Order();
         order.setOrderDate(Instant.now());
-        order.setOrderProducts(createOrderProducts(products, order));
+        order.setOrderProducts(createOrderProducts(cartProducts, order));
         order.setCustomer(customer);
         return order;
     }
@@ -47,12 +58,12 @@ public class OrderService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    private List<OrderProduct> createOrderProducts(List<Product> products, Order order) {
-        return products.stream().map(product -> {
+    private List<OrderProduct> createOrderProducts(List<CartProduct> cartProducts, Order order) {
+        return cartProducts.stream().map(cartProduct -> {
                     OrderProduct orderProduct = new OrderProduct();
-                    orderProduct.setName(product.getName());
-                    orderProduct.setPrice(product.getPrice());
-                    orderProduct.setQuantity(product.getQuantity());
+                    orderProduct.setName(cartProduct.getProduct().getName());
+                    orderProduct.setPrice(cartProduct.getProduct().getPrice());
+                    orderProduct.setQuantity(cartProduct.getQuantity());
                     orderProduct.setOrder(order);
                     return orderProduct;
                 })
@@ -72,5 +83,10 @@ public class OrderService {
 
     public void clearCart(String cartId) {
         cartProductRepository.deleteByCartId(cartId);
+    }
+
+    public Order getOrder(String id) {
+        return orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Zamówienie nie zostało znalezione"));
     }
 }

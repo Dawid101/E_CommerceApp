@@ -9,7 +9,7 @@
 <body>
 <div class="container mt-4">
     <h1>Dodawanie produktu</h1><br>
-    <form action="#" th:action="@{/addProduct}" th:object="${product}" method="post">
+    <form action="#" th:action="@{/add-product}" th:object="${product}" method="post">
         Nazwa produktu: <input type="text" th:field="*{name}" required><br>
         Opis: <input type="text" th:field="*{description}" required><br>
         Cena: <input type="text" th:field="*{price}" required><br>
