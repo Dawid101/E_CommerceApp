@@ -12,7 +12,7 @@ E-commerce application built with Java and web interface. The system enables pro
 
 ## Technologies
 - **Backend**: Java
-- **Frontend**: HTML/CSS/JavaScript
+- **Frontend**: HTML/CSS
 - **Framework**: SpringBoot (Spring Security), Thymeleaf
 - **Build Tool**: Maven
 
